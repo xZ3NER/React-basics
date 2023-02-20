@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "./ExpenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [userInput, setUserInput] = useState({
     titleInput: "",
     amountInput: "",
@@ -22,13 +22,30 @@ const ExpenseForm = () => {
   };
 
   const dateChangeHandler = (event) => {
+    /* 2.- Set a function instead of a simple value when depends on the previous state */
     setUserInput((prevState) => {
       return { ...prevState, dateInput: event.target.value };
     });
   };
 
+  const submitHandler = (event) => {
+    /* 3.- Prevent page reload when using 'submit' in forms */
+    event.preventDefault();
+
+    /* 3.- Child-parent communication */
+    props.onFormSubmit(userInput);
+
+    /* Clear all inputs */
+    setUserInput({
+      titleInput: "",
+      amountInput: "",
+      dateInput: "",
+    });
+  };
+
   return (
-    <form>
+    /* 3.- Submit form */
+    <form onSubmit={submitHandler}>
       <div className='new-expense__controls'>
         <div className='new-expense__control'>
           <label htmlFor='form-title'>Title</label>
@@ -36,16 +53,23 @@ const ExpenseForm = () => {
             type='text'
             id='form-title'
             name='title-input'
+            /* 3.- Two-way binding */
+            value={userInput.titleInput}
             onChange={titleChangeHandler}
+            required
           />
         </div>
         <div className='new-expense__control'>
           <label htmlFor='form-amount'>Amount</label>
           <input
-            type='text'
+            type='number'
             id='form-amount'
             name='amount-input'
+            value={userInput.amountInput}
             onChange={amountChangeHandler}
+            min='0.01'
+            step='0.01'
+            required
           />
         </div>
         <div className='new-expense__control'>
@@ -56,7 +80,9 @@ const ExpenseForm = () => {
             name='date-input'
             min='2019-01-01'
             max='2022-12-31'
+            value={userInput.dateInput}
             onChange={dateChangeHandler}
+            required
           />
         </div>
       </div>

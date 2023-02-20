@@ -31,10 +31,15 @@ const App = () => {
     },
   ];
 
+  const addNewExpense = (expense) => {
+    expenses.push(expense);
+    console.log(expenses);
+  };
+
   return (
     <div>
       <h2>Let's get started!</h2>
-      <NewExpense />
+      <NewExpense onExpenseAdded={addNewExpense} />
       <Expenses items={expenses} />
     </div>
   );
