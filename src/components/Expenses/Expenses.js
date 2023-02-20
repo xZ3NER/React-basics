@@ -8,7 +8,7 @@ const Expenses = (props) => {
 
   return (
     /* Using a custom component, className will pass act as a normal prop */
-    <Card className="expenses">
+    <Card className='expenses'>
       {/* Everything inside between the open and close tag of a custom component,
           can be get as a prop in the component js file, using 'props.children'*/}
       <ExpenseItem
@@ -33,6 +33,6 @@ const Expenses = (props) => {
       />
     </Card>
   );
-}
+};
 
 export default Expenses;
