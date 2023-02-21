@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ExpenseForm from "./ExpenseForm";
 import "./NewExpense.css";
 
 const NewExpense = (props) => {
+  const [newExpenseClicked, setNewExpenseClicked] = useState(false);
+
+  const toggleClickHandler = () => {
+    setNewExpenseClicked(!newExpenseClicked);
+  };
 
   /* 3.- Child-parent communication */
   const submitExpense = (expense) => {
     const createdExpense = {
       ...expense,
-      dateInput: new Date(expense.dateInput),
+      date: new Date(expense.date),
       id: Math.random().toString(),
     };
 
@@ -19,7 +24,15 @@ const NewExpense = (props) => {
   return (
     <div className='new-expense'>
       {/* 3.- Child-parent communication */}
-      <ExpenseForm onFormSubmit={submitExpense} />
+      {!newExpenseClicked && (
+        <button onClick={toggleClickHandler}>Add New Expense</button>
+      )}
+      {newExpenseClicked && (
+        <ExpenseForm
+          onFormSubmit={submitExpense}
+          onFormCancel={toggleClickHandler}
+        />
+      )}
     </div>
   );
 };

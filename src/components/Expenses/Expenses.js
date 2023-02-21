@@ -3,46 +3,30 @@ import React, { useState } from "react";
 import "./Expenses.css";
 
 import Card from "../UI/Card";
-import ExpenseItem from "./ExpenseItem";
 import ExpensesFilter from "./ExpensesFilter";
+import ExpensesList from "./ExpensesList";
 
 /* 1.- Pasing data using props */
 const Expenses = (props) => {
-  const items = props.items;
-
   const [filterYear, setFilterYear] = useState("2019");
 
   const filterByYear = (year) => {
     setFilterYear(year);
-    console.log(year);
   };
+
+  const filteredExpenses = props.items.filter(
+    (item) => item.date.getFullYear().toString() === filterYear
+  );
 
   return (
     /* Using a custom component, className will pass act as a normal prop */
     <Card className='expenses'>
       <ExpensesFilter selected={filterYear} onYearChange={filterByYear} />
       {/* Everything inside between the open and close tag of a custom component,
-          can be get as a prop in the component js file, using 'props.children'*/}
-      <ExpenseItem
-        title={items[0].title}
-        amount={items[0].amount}
-        date={items[0].date}
-      />
-      <ExpenseItem
-        title={items[1].title}
-        amount={items[1].amount}
-        date={items[1].date}
-      />
-      <ExpenseItem
-        title={items[2].title}
-        amount={items[2].amount}
-        date={items[2].date}
-      />
-      <ExpenseItem
-        title={items[3].title}
-        amount={items[3].amount}
-        date={items[3].date}
-      />
+      can be get as a prop in the component js file, using 'props.children'*/}
+
+      {/* 3.- Rendering list of data */}
+      <ExpensesList items={filteredExpenses}/>
     </Card>
   );
 };
